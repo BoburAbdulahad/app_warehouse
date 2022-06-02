@@ -20,6 +20,7 @@ public class CategoryService {
     public List<Category> get(){
         return categoryRepository.findAll();
     }
+
     //add Category
     public Result add(CategoryDto categoryDto) {// TODO: 6/1/2022 add qilishda jpa query yozish kk parentCategoryId va name boyicha
         Category category = new Category();
@@ -41,9 +42,23 @@ public class CategoryService {
             return new Result("Category not found",false);
         Category editingCategory = categoryRepository.getReferenceById(id);
         editingCategory.setName(categoryDto.getName());
-        if (categoryDto.getParentCategoryId())
+        if (categoryDto.getParentCategoryId()!=null){
+            Optional<Category> optionalParentCategory = categoryRepository.findById(categoryDto.getParentCategoryId());
+            if (!optionalParentCategory.isPresent())
+                return new Result("Parent category not found",false);
+            editingCategory.setParentCategory(optionalParentCategory.get());
+        }
+        categoryRepository.save(editingCategory);// bola categoryni ota categoryga edit qilsam boladagi parent category nima boladi? check this
+        return new Result("Category edited",true,editingCategory);
     }
 
-
+    //delete category
+    public Result delete(Integer id){
+        if (!categoryRepository.findById(id).isPresent()) {
+            return new Result("Category not found",false);
+        }
+        categoryRepository.deleteById(id);
+        return new Result("Category deleted",true);
+    }
 
 }

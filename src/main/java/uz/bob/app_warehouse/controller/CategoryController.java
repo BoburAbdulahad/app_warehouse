@@ -18,7 +18,7 @@ public class CategoryController {
 
     @GetMapping
     public List<Category> get(){
-
+        return categoryService.get();
     }
 
     @PostMapping
@@ -29,12 +29,14 @@ public class CategoryController {
 
     @PutMapping("/{id}")
     public Result edit(@PathVariable Integer id,@RequestBody CategoryDto categoryDto){
-
+        Result edit = categoryService.edit(id, categoryDto);
+        return edit;
     }
 
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id){
-
+        Result delete = categoryService.delete(id);
+        return delete;
     }
 
 }

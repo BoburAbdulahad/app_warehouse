@@ -25,7 +25,7 @@ public class Product extends AbsEntity {
 
     private String code;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false )
     private Measurement measurement;
 
 
