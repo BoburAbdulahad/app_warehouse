@@ -16,7 +16,7 @@ public class OutputProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Product product;
 
     @Column(nullable = false)
@@ -25,7 +25,7 @@ public class OutputProduct {
     @Column(nullable = false)
     private Double price;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Output output;
 
 

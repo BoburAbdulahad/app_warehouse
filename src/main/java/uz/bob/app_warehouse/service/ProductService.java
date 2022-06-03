@@ -56,7 +56,7 @@ public class ProductService {
         product.setCategory(optionalCategory.get());
         product.setPhoto(optionalAttachment.get());
         product.setMeasurement(optionalMeasurement.get());
-        product.setCode("1");// TODO: 6/2/2022 generation code available product id get and add +1
+        product.setCode(forProductCode());
         productRepository.save(product);
         return new Result("Product added",true);
     }
@@ -76,8 +76,19 @@ public class ProductService {
         }
         Product product = optionalProduct.get();
         product.setName(productDto.getName());
-        product.setCategory(????);
-        //todo to be continued
+        product.setCategory(categoryRepository.findById(productDto.getCategoryId()).get());
+        product.setPhoto(attachmentRepository.getReferenceById(productDto.getPhotoId()));
+        product.setMeasurement(measurementRepository.getReferenceById(productDto.getMeasurementId()));
+//        product.setCode(forProductCode());
+        return null;
+    }
+
+
+    public String forProductCode(){
+        double random = Math.random()*10000;
+        String value = String.valueOf(random);
+        String[] split = value.split("\\.");
+        return split[0];
     }
 
 }

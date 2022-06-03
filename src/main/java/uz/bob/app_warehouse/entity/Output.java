@@ -19,19 +19,19 @@ public class Output {
 
     private Timestamp date;//check this timestamp package
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Warehouse warehouse;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Client client;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Currency currency;
 
     @Column(nullable = false)
     private String factureNumber;
 
     @Column(nullable = false)
-    private Integer code;
+    private String code;
 
 }

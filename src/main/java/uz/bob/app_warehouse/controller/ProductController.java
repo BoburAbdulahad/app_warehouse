@@ -18,7 +18,8 @@ public class ProductController {
 
     @GetMapping
     public List<Product> get(){
-
+        List<Product> products = productService.get();
+        return products;
     }
 
     @PostMapping
@@ -28,11 +29,13 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public Result edit(){
-
+    public Result edit(@PathVariable Integer id,@RequestBody ProductDto productDto){
+        Result result = productService.edit(id, productDto);
+        return result;
     }
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id){
-
+        Result result = productService.delete(id);
+        return result;
     }
 }

@@ -20,18 +20,18 @@ public class Input {
 
     private Timestamp date;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Warehouse warehouse;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Supplier supplier;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Currency currency;
 
     @Column(nullable = false)
     private String factureNumber;
 
     @Column(unique = true,nullable = false)
-    private Integer code;
+    private String code;
 }

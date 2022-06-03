@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Category extends AbsEntity {
 
-    @ManyToOne
+    @ManyToOne // TODO: 6/3/2022 optional=false qilib tekwirib korish kk annatatsiyani
     private Category parentCategory;
 
 
