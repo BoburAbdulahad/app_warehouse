@@ -6,4 +6,6 @@ import uz.bob.app_warehouse.entity.Measurement;
 public interface MeasurementRepository extends JpaRepository<Measurement,Integer> {
 
     boolean existsByName(String name);
+
+    boolean existsByNameAndIdNot(String name, Integer id);
 }

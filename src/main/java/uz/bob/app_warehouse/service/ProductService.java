@@ -35,6 +35,15 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    public Product getById(Integer id){
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        if (!optionalProduct.isPresent()) {
+            return new Product();
+        }
+        Product product = optionalProduct.get();
+        return product;
+    }
+
     public Result add(ProductDto productDto){
         boolean exists = productRepository.existsByNameAndCategoryId(productDto.getName(), productDto.getCategoryId());
         if (exists)

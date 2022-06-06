@@ -3,6 +3,7 @@ package uz.bob.app_warehouse.service;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import uz.bob.app_warehouse.entity.Attachment;
@@ -11,6 +12,8 @@ import uz.bob.app_warehouse.payload.Result;
 import uz.bob.app_warehouse.repository.AttachmentContentRepository;
 import uz.bob.app_warehouse.repository.AttachmentRepository;
 
+import javax.servlet.http.HttpServletResponse;
+import java.nio.file.Files;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +30,21 @@ public class AttachmentService {
         return attachmentRepository.findAll();
     }
 
+    @SneakyThrows
+    public void downloadById(Integer id,HttpServletResponse response){
+        Optional<Attachment> optionalAttachment = attachmentRepository.findById(id);
+        if (optionalAttachment.isPresent()) {
+            Attachment attachment = optionalAttachment.get();
+            Optional<AttachmentContent> optionalAttachmentContent = attachmentContentRepository.findById(attachment.getId());
+            if (optionalAttachmentContent.isPresent()) {
+                AttachmentContent attachmentContent = optionalAttachmentContent.get();
+                response.setHeader("Content-Disposition","attachment;filename=\""+attachment.getName()+"\"");
+                response.setContentType(attachment.getContentType());
+                FileCopyUtils.copy(attachmentContent.getBytes(),response.getOutputStream());
+            }
+        }
+
+    }
     @SneakyThrows
     public Result add(MultipartHttpServletRequest request){
         Iterator<String> fileNames = request.getFileNames();

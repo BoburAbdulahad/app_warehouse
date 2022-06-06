@@ -40,6 +40,13 @@ public class MeasurementService {
         if (!optionalMeasurement.isPresent()) {
             return new Result("Measurement not found",false);
         }
+//        boolean existsByName = measurementRepository.existsByName(measurement.getName());
+//        if (existsByName)
+//            return new Result("Measurement exist by name",false);
+
+        boolean b = measurementRepository.existsByNameAndIdNot(measurement.getName(), id);
+        if (b)
+            return new Result("This measurement already exist",false);
         Measurement editingMeasurement = optionalMeasurement.get();
         editingMeasurement.setName(measurement.getName());
         Measurement saved = measurementRepository.save(editingMeasurement);

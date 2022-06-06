@@ -7,6 +7,7 @@ import uz.bob.app_warehouse.entity.Attachment;
 import uz.bob.app_warehouse.payload.Result;
 import uz.bob.app_warehouse.service.AttachmentService;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -28,7 +29,11 @@ public class AttachmentController {
         return attachments;
     }
 
-    @DeleteMapping("{id}")
+    @GetMapping("/{id}")
+    public void downloadById(@PathVariable Integer id,HttpServletResponse response){
+        attachmentService.downloadById(id,response);
+    }
+    @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id){
         Result result = attachmentService.delete(id);
         return result;
