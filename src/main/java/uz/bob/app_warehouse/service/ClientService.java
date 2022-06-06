@@ -48,8 +48,8 @@ public class ClientService {
         Client editingClient = clientRepository.getReferenceById(id);
         editingClient.setName(client.getName());
         editingClient.setPhoneNumber(client.getPhoneNumber());
-        clientRepository.save(editingClient);
-        return new Result("Client edited",true);
+        Client savedClient = clientRepository.save(editingClient);
+        return new Result("Client edited",true,savedClient);
     }
 
     public Result delete(Integer id){
