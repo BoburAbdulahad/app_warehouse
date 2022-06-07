@@ -9,6 +9,7 @@ import uz.bob.app_warehouse.entity.Measurement;
 import uz.bob.app_warehouse.entity.Product;
 import uz.bob.app_warehouse.payload.ProductDto;
 import uz.bob.app_warehouse.payload.Result;
+import uz.bob.app_warehouse.payload.UniversalClass;
 import uz.bob.app_warehouse.repository.AttachmentRepository;
 import uz.bob.app_warehouse.repository.CategoryRepository;
 import uz.bob.app_warehouse.repository.MeasurementRepository;
@@ -65,7 +66,7 @@ public class ProductService {
         product.setCategory(optionalCategory.get());
         product.setPhoto(optionalAttachment.get());
         product.setMeasurement(optionalMeasurement.get());
-        product.setCode(forProductCode());
+        product.setCode(UniversalClass.forRandomCode());
         productRepository.save(product);
         return new Result("Product added",true);
     }
@@ -93,11 +94,5 @@ public class ProductService {
     }
 
 
-    public String forProductCode(){
-        double random = Math.random()*10000;
-        String value = String.valueOf(random);
-        String[] split = value.split("\\.");
-        return split[0];
-    }
 
 }
