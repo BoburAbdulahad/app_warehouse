@@ -74,7 +74,7 @@ public class UserService {
         }
         user.setWarehouses(warehouseSet);
         User savedUser = userRepository.save(user);
-        warehouseSet.clear();
+        warehousesIds.clear();
         return new Result("User edited",true,savedUser);
     }
 
