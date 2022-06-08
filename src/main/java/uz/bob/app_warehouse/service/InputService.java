@@ -45,12 +45,12 @@ public class InputService {
     public Result add(InputDto inputDto){// TODO: 6/8/2022 postman orqali vaqtni 1 secund farq bn kiritilsa aynan bir xil warehouse ga aynan bir supplier, cheklov iwlamayapti
 
         Timestamp timestamp=Timestamp.valueOf(inputDto.getDate());
-
-        List<LocalTime> intervalTimes = inputRepository.intervalTimes(timestamp.toString(), inputDto.getSupplierId());
-        for (LocalTime intervalTime : intervalTimes) {
-            if (intervalTime.getHour()<2)
-                return new Result("Interval time don't support!",false);
-        }
+//
+//        List<LocalTime> intervalTimes = inputRepository.intervalTimes(timestamp.toString(), inputDto.getSupplierId());
+//        for (LocalTime intervalTime : intervalTimes) {//shu joyda todo bor
+//            if (intervalTime.getHour()<2)
+//                return new Result("Interval time don't support!",false);
+//        }
 
         boolean existsByDateAndSupplierId = inputRepository.existsByDateAndSupplierId(timestamp, inputDto.getSupplierId());
         if (existsByDateAndSupplierId) {
@@ -82,7 +82,34 @@ public class InputService {
     }
 
     public Result edit(Integer id,InputDto inputDto){
-        return null;
+        Timestamp timestamp=Timestamp.valueOf(inputDto.getDate());
+
+        boolean b = inputRepository.existsByDateAndSupplierIdAndIdNot(timestamp, inputDto.getSupplierId(), id);
+        if (b)
+            return new Result("This supplier for its time already exist",false);
+
+        Optional<Input> optionalInput = inputRepository.findById(id);
+        if (!optionalInput.isPresent()) {
+            return new Result("Input not found",false);
+        }
+        Input editingInput = optionalInput.get();
+
+        editingInput.setDate(timestamp);
+        editingInput.setWarehouse(warehouseRepository.getReferenceById(inputDto.getWarehouseId()));
+        editingInput.setSupplier(supplierRepository.getReferenceById(inputDto.getSupplierId()));
+        editingInput.setCurrency(currencyRepository.getReferenceById(inputDto.getCurrencyId()));
+
+        Input savedInput = inputRepository.save(editingInput);
+        return new Result("Input edited",true,savedInput);
+    }
+
+    public Result delete(Integer id){
+        try {
+            inputRepository.deleteById(id);
+            return new Result("Input deleted",true);
+        }catch (Exception e){
+            return new Result("Error in deleting input",false);
+        }
     }
 
     public static void main(String[] args) {

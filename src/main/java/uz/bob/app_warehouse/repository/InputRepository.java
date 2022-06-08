@@ -14,8 +14,10 @@ public interface InputRepository extends JpaRepository<Input,Integer> {
 
     boolean existsByDateAndSupplierId(Timestamp date, Integer supplier_id);
 
-    @Query(value = "select date-'str' from INPUT where supplier_id=supplierId",nativeQuery = true)
-    List<LocalTime> intervalTimes(String str, Integer supplierId);
+    boolean existsByDateAndSupplierIdAndIdNot(Timestamp date, Integer supplier_id, Integer id);
+
+//    @Query(value = "select date-'str' from INPUT where supplier_id=supplierId",nativeQuery = true)
+//    List<LocalTime> intervalTimes(String str, Integer supplierId);
 
 
 
