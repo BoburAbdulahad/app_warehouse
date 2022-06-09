@@ -16,8 +16,7 @@ public class Output {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-
-    private Timestamp date;//check this timestamp package
+    private Timestamp date;
 
     @ManyToOne(optional = false)
     private Warehouse warehouse;

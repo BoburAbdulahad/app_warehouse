@@ -15,9 +15,9 @@ public class InputDto {
 
     private Integer currencyId;
 
-    private String factureNumber;
-
-    private String code;
+//    private String factureNumber;
+//
+//    private String code;
 
 
 }
