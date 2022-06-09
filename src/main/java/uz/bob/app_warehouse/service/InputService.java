@@ -12,6 +12,7 @@ import uz.bob.app_warehouse.repository.SupplierRepository;
 import uz.bob.app_warehouse.repository.WarehouseRepository;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -44,18 +45,18 @@ public class InputService {
 
     public Result add(InputDto inputDto){// TODO: 6/8/2022 postman orqali vaqtni 1 secund farq bn kiritilsa aynan bir xil warehouse ga aynan bir supplier, cheklov iwlamayapti
 
-        Timestamp timestamp=Timestamp.valueOf(inputDto.getDate());
+//        Timestamp timestamp=Timestamp.valueOf(inputDto.getDate());
 //
 //        List<LocalTime> intervalTimes = inputRepository.intervalTimes(timestamp.toString(), inputDto.getSupplierId());
 //        for (LocalTime intervalTime : intervalTimes) {//shu joyda todo bor
 //            if (intervalTime.getHour()<2)
 //                return new Result("Interval time don't support!",false);
 //        }
-
-        boolean existsByDateAndSupplierId = inputRepository.existsByDateAndSupplierId(timestamp, inputDto.getSupplierId());
-        if (existsByDateAndSupplierId) {
-            return new Result("This time such as supplier already exist",false);
-        }
+//
+//        boolean existsByDateAndSupplierId = inputRepository.existsByDateAndSupplierId(timestamp, inputDto.getSupplierId());
+//        if (existsByDateAndSupplierId) {
+//            return new Result("This time such as supplier already exist",false);
+//        }
         if (!warehouseRepository.findById(inputDto.getWarehouseId()).isPresent()) {
             return new Result("Warehouse not found",false);
         }
@@ -66,7 +67,7 @@ public class InputService {
             return new Result("Currency not found",false);
         }
 
-
+        Timestamp timestamp=Timestamp.from(Instant.now());
         Input input=new Input();
         input.setDate(timestamp);
         input.setWarehouse(warehouseRepository.getReferenceById(inputDto.getWarehouseId()));
@@ -74,7 +75,7 @@ public class InputService {
         input.setCurrency(currencyRepository.getReferenceById(inputDto.getCurrencyId()));
 
         int size = inputRepository.sizeOfInput();
-        input.setFactureNumber(String.valueOf(size+1));
+        input.setFactureNumber(String.valueOf(size+1));// TODO: 6/9/2022 facture number ni avtomatik qilib oladigan qildim, supplier_id,warehouse_id va facture_number uchalasi birga qaytadan kelsa owa xolatda cheklov qoyish mumkin
         input.setCode(UniversalClass.forRandomCode());
 
         inputRepository.save(input);
@@ -82,11 +83,9 @@ public class InputService {
     }
 
     public Result edit(Integer id,InputDto inputDto){
-        Timestamp timestamp=Timestamp.valueOf(inputDto.getDate());
-
-        boolean b = inputRepository.existsByDateAndSupplierIdAndIdNot(timestamp, inputDto.getSupplierId(), id);
-        if (b)
-            return new Result("This supplier for its time already exist",false);
+//        boolean b = inputRepository.existsByDateAndSupplierIdAndIdNot( inputDto.getSupplierId(), id);
+//        if (b)
+//            return new Result("This supplier for its time already exist",false);
 
         Optional<Input> optionalInput = inputRepository.findById(id);
         if (!optionalInput.isPresent()) {
@@ -94,7 +93,6 @@ public class InputService {
         }
         Input editingInput = optionalInput.get();
 
-        editingInput.setDate(timestamp);
         editingInput.setWarehouse(warehouseRepository.getReferenceById(inputDto.getWarehouseId()));
         editingInput.setSupplier(supplierRepository.getReferenceById(inputDto.getSupplierId()));
         editingInput.setCurrency(currencyRepository.getReferenceById(inputDto.getCurrencyId()));
@@ -112,12 +110,4 @@ public class InputService {
         }
     }
 
-    public static void main(String[] args) {
-        Timestamp timestamp=Timestamp.valueOf("2022-12-23 13:00:02");
-        LocalDateTime localDateTime = timestamp.toLocalDateTime();
-        LocalTime localTime = localDateTime.toLocalTime();
-        LocalDate localDate = localDateTime.toLocalDate();
-        System.out.println(localTime);
-        System.out.println(localDate);
-    }
 }

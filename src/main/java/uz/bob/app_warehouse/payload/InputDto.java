@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 @Data
 public class InputDto {
 
-    private String date;
+//    private String date;
 
     private Integer warehouseId;
 

@@ -33,12 +33,12 @@ public class InputController {
 
     @PutMapping("/{id}")
     public Result edit(@PathVariable Integer id,@RequestBody InputDto inputDto){
-return null;
+        return inputService.edit(id, inputDto);
     }
 
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id){
-return null;
+        return inputService.delete(id);
     }
 
 
