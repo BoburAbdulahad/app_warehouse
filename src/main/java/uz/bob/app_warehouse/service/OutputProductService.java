@@ -52,5 +52,13 @@ public class OutputProductService {
         return new Result("OutputProduct added",true);
     }
 
+    public Result delete(Integer id){
+        try {
+            outputProductRepository.deleteById(id);
+            return new Result("OutputProduct deleted",true);
+        }catch (Exception e){
+            return new Result("Error in deleting",false);
+        }
+    }
 
 }
