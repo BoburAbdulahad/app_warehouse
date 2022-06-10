@@ -17,28 +17,28 @@ public class OutputProductController {
     OutputProductService outputProductService;
 
     @GetMapping
-    public List<OutputProduct> getAll(){
-
+    public List<OutputProduct> getAll() {
+        return outputProductService.getAll();
     }
 
     @GetMapping("/{id}")
-    public OutputProduct getOneById(@PathVariable Integer id){
-
+    public OutputProduct getOneById(@PathVariable Integer id) {
+        return outputProductService.getOneById(id);
     }
 
     @PostMapping
-    public Result add(@RequestBody OutputProductDto outputProductDto){
-
+    public Result add(@RequestBody OutputProductDto outputProductDto) {
+        return outputProductService.add(outputProductDto);
     }
 
     @PutMapping("/{id}")
-    public Result edit(@PathVariable Integer id,@RequestBody OutputProductDto outputProductDto){
-
+    public Result edit(@PathVariable Integer id, @RequestBody OutputProductDto outputProductDto) {
+        return outputProductService.edit(id, outputProductDto);
     }
 
     @DeleteMapping("/{id}")
-    public Result delete(@PathVariable Integer id){
-
+    public Result delete(@PathVariable Integer id) {
+        return outputProductService.delete(id);
     }
 
 }

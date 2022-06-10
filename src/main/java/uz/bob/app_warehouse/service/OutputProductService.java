@@ -52,6 +52,24 @@ public class OutputProductService {
         return new Result("OutputProduct added",true);
     }
 
+    public Result edit(Integer id,OutputProductDto outputProductDto){
+        boolean b = outputProductRepository.existsByProduct_IdAndOutput_IdAndIdNot(outputProductDto.getProductId(), outputProductDto.getOutputId(), id);
+        if (b)
+            return new Result("Its product to have in output and this situation already exist other id",false);
+        Optional<OutputProduct> optionalOutputProduct = outputProductRepository.findById(id);
+        if (!optionalOutputProduct.isPresent()) {
+            return new Result("OutputProduct not found",false);
+        }
+        OutputProduct editingOutputProduct = optionalOutputProduct.get();
+        editingOutputProduct.setProduct(productRepository.getReferenceById(outputProductDto.getProductId()));
+        editingOutputProduct.setAmount(outputProductDto.getAmount());
+        editingOutputProduct.setPrice(outputProductDto.getPrice());
+        editingOutputProduct.setOutput(outputRepository.getReferenceById(outputProductDto.getOutputId()));
+
+        OutputProduct savedOutputProduct = outputProductRepository.save(editingOutputProduct);
+        return new Result("OutputProduct edited",true,savedOutputProduct);
+    }
+
     public Result delete(Integer id){
         try {
             outputProductRepository.deleteById(id);
